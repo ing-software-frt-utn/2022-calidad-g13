@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Negocio.Modelos.ModelModelo>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Modelos</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SKU)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Denominacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LimiteSuperiorObs)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LimiteInferiorObs)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LimiteSuperiorRep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LimiteInferiorRep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Colores)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SKU)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Denominacion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LimiteSuperiorObs)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LimiteInferiorObs)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LimiteSuperiorRep)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LimiteInferiorRep)
+        </td>
+        <td>
+            @foreach (var color in item.Colores)
+            {
+                <span>@color.Descripcion </span>
+            }
+        </td>
+
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.SKU }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.SKU })
+        </td>
+    </tr>
+}
+
+</table>

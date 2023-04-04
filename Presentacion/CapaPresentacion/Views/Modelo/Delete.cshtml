@@ -1,0 +1,73 @@
+﻿@model Negocio.Modelos.ModelModelo
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ModelModelo</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SKU)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SKU)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Denominacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Denominacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LimiteSuperiorObs)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LimiteSuperiorObs)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LimiteInferiorObs)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LimiteInferiorObs)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LimiteSuperiorRep)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LimiteSuperiorRep)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LimiteInferiorRep)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LimiteInferiorRep)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

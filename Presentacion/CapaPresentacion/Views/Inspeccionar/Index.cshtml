@@ -1,0 +1,362 @@
+﻿@{
+    ViewBag.Title = "Inspeccionar";
+}
+
+@model List<Datos.Defecto>
+
+
+<h2>Inspeccionar</h2>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <p style="margin-right: 50px;"><strong>Numero OP:</strong> @ViewBag.NumeroOP</p>
+    <p style="margin-right: 50px;"><Strong>Modelo:</Strong> @ViewBag.ModeloOP.Denominacion</p>
+    <p style="margin-right: 50px;"><Strong>Color:</Strong>@ViewBag.ColorOP.Descripcion</p>
+    <p style="margin-right: 50px;"><Strong>Fecha:</Strong>@DateTime.Now.ToString("yyyy-MM-dd")</p>
+</div>
+
+
+@{
+    var horas = ViewBag.Horas as List<string>;
+    var currentButton = ViewBag.CurrentButton as string;
+    var horaSeleccionada = "";
+
+}
+<div id="horas-container" style="display: flex; flex-wrap: wrap; justify-content: center; margin-right: 100px;">
+    @foreach (var hora in horas)
+    {
+        <button class="btn btn-outline-secondary btn-hora @(hora == currentButton ? "active" : "")" id="@hora" style="width: 150px">@hora</button>
+    }
+</div>
+
+
+
+
+<div style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 50px; margin-bottom: 50px">
+
+    <button id="disminuir" class="btn btn-primary"><strong>-</strong></button>
+    <span style="margin-left: 10px; margin-right: 10px;"><strong>Par de primera:</strong> <span id="valor">0</span></span>
+    <button id="aumentar" class="btn btn-primary"><strong>+</strong></button>
+
+
+</div>
+
+var buttonsHora = document.querySelectorAll(".btn-hora");
+
+<script>
+
+    buttonsHora.forEach(function (button) { // añadir un evento de click a cada botón
+        button.addEventListener("click", function () {
+            horaSeleccionada = button.id; // guardar el id del botón (que contiene la hora) en la variable horaSeleccionada
+        });
+    });
+
+    function sumar(idContador) {
+        var contador = document.getElementById(idContador);
+        var valorActual = parseInt(contador.innerHTML);
+        valorActual++;
+        contador.innerHTML = valorActual;
+    }
+    function restar(idContador) {
+        var contador = document.getElementById(idContador);
+        var valorActual = parseInt(contador.innerHTML);
+        valorActual--;
+        contador.innerHTML = valorActual;
+    }
+
+    // obtén el elemento de botón "aumentar" por su ID
+    var btnAumentar = document.getElementById("aumentar");
+    // agrega un manejador de eventos de clic para el botón "aumentar"
+    btnAumentar.addEventListener("click", function () {
+        // obtén el valor actual de la variable y aumenta en 1
+        var valorActual = parseInt(document.getElementById("valor").innerHTML);
+        valorActual++;
+        // actualiza el valor del campo de texto
+        document.getElementById("valor").innerHTML = valorActual;
+    });
+    // obtén el elemento de botón "disminuir" por su ID
+    var btnDisminuir = document.getElementById("disminuir");
+    // agrega un manejador de eventos de clic para el botón "disminuir"
+    btnDisminuir.addEventListener("click", function () {
+        // obtén el valor actual de la variable y disminuye en 1
+        var valorActual = parseInt(document.getElementById("valor").innerHTML);
+        valorActual--;
+        // actualiza el valor del campo de texto
+        document.getElementById("valor").innerHTML = valorActual;
+    });
+
+
+</script>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Seleccionar defectos</th>
+                    </tr>
+                    <tr>
+                        <th>Pie Izquierdo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var defecto in Model.Where(d => d.Tipo_Defecto == "Observado"))
+                    {
+                        <tr data-tipo="@defecto.Tipo_Defecto" class="defecto">
+                            <td>
+                                <button id="btnIzquierdo2-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="restarObservado('valorizquierdo-@defecto.ID_Defecto', horaSeleccionada, 'izquierdo')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="izquierdo">-</button>
+                                @defecto.Descripcion: <span id="valorizquierdo-@defecto.ID_Defecto" class="valor valorObs">0</span>
+                            </td>
+                            <td>
+                                <button id="btnIzquierdo-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="sumarObservado('valorizquierdo-@defecto.ID_Defecto', horaSeleccionada, 'izquierdo')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="izquierdo">+</button>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="col-md-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Observado</th>
+                    </tr>
+                    <tr>
+                        <th>Pie derecho</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var defecto in Model.Where(d => d.Tipo_Defecto == "Observado"))
+                    {
+                        <tr data-tipo="@defecto.Tipo_Defecto" class="defecto">
+                            <td>
+                                <button id="btnDerecho2-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="restarObservado('valorderecho-@defecto.ID_Defecto', @horaSeleccionada, 'derecho')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="derecho">-</button>
+                                @defecto.Descripcion: <span id="valorderecho-@defecto.ID_Defecto" class="valor valorObs">0</span>
+                            </td>
+                            <td>
+                                <button id="btnDerecho-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="sumarObservado('valorderecho-@defecto.ID_Defecto', @horaSeleccionada, 'derecho')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="derecho">+</button>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+                <span style="text-align: center;"><strong>Total Observado:</strong> </span><span id="totalObs">0</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Seleccionar defectos</th>
+                    </tr>
+                    <tr>
+                        <th>Pie Izquierdo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var defecto in Model.Where(d => d.Tipo_Defecto == "Reproceso"))
+                    {
+                        <tr data-tipo="@defecto.Tipo_Defecto" class="defecto">
+
+                            <td>
+                                <button id="btnIzquierdo4-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="restarRep('valorizquierdo-@defecto.ID_Defecto' , horaSeleccionada, 'izquierdo')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="izquierdo">-</button>
+                                @defecto.Descripcion: <span id="valorizquierdo-@defecto.ID_Defecto" class="valor valorRep">0</span>
+                            </td>
+                            <td>
+                                <button id="btnIzquierdo3-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="sumarRep('valorizquierdo-@defecto.ID_Defecto' , horaSeleccionada, 'izquierdo')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="izquierdo">+</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-3">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Reproceso</th>
+                    </tr>
+                    <tr>
+                        <th>Pie derecho</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var defecto in Model.Where(d => d.Tipo_Defecto == "Reproceso"))
+                    {
+                        <tr data-tipo="@defecto.Tipo_Defecto" class="defecto">
+                            <td>
+                                <button id="btnDerecho2-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="restarRep('valorderecho-@defecto.ID_Defecto', horaSeleccionada, 'derecho')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="derecho">-</button>
+                                @defecto.Descripcion: <span id="valorderecho-@defecto.ID_Defecto" class="valor valorRep">0</span>
+                            </td>
+                            <td>
+                                <button id="btnDerecho3-@defecto.ID_Defecto" class="btn btn-sm btn-primary btn-select" onclick="sumarRep('valorderecho-@defecto.ID_Defecto', horaSeleccionada, 'derecho')" data-tipo-defecto="@defecto.Tipo_Defecto" data-id-defecto="@defecto.ID_Defecto" data-pie="derecho">+</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div>
+                <div>
+                    <span style="text-align: center;"><strong>Total Reproceso:</strong> </span><span id="total">0</span>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-4 text-center">
+    <button type="button" class="btn btn-primary" onclick="history.back()">Volver</button>
+</div>
+
+<button id="btn-registrar" type="button">Registrar</button>
+
+<script>
+
+    $('.btn-hora').click(function () {
+        horaSeleccionada = $(this).attr('id');
+        $('.btn-hora').removeClass('active');
+        $(this).addClass('active');
+    });
+
+
+</script>
+
+<script>
+    function actualizarTotal() {
+        var total = 0;
+        $('.valorRep').each(function () {
+            total += parseInt($(this).text());
+        });
+        $('#total').text(total);
+    }
+
+    function sumarRep(id, horaSeleccionada, pieSeleccionado) {
+        var valor = parseInt($('#' + id).text());
+        $('#' + id).text(valor + 1);
+        actualizarTotal();
+
+        var data = {
+            id: id,
+            cantidad: 1,
+            tipoPie: pieSeleccionado,
+            horaSeleccionada: horaSeleccionada,
+            esSuma: true
+        };
+        enviarDatosAlControlador(data);
+    }
+
+    function restarRep(id, horaSeleccionada, pieSeleccionado) {
+        var valor = parseInt($('#' + id).text());
+        if (valor > 0) {
+            $('#' + id).text(valor - 1);
+            actualizarTotal();
+
+            var data = {
+                id: id,
+                cantidad: 1,
+                tipoPie: pieSeleccionado,
+                horaSeleccionada: horaSeleccionada,
+                esSuma: false
+            };
+            enviarDatosAlControlador(data);
+
+        }
+    }
+    function actualizarTotalObs() {
+        var total = 0;
+        $('.valorObs').each(function () {
+            total += parseInt($(this).text());
+        });
+        $('#totalObs').text(total);
+    }
+
+    function sumarObservado(id, horaSeleccionada, pieSeleccionado) {
+        var valor = parseInt($('#' + id).text());
+        $('#' + id).text(valor + 1);
+        actualizarTotalObs();
+
+        var data = {
+            id: id,
+            cantidad: 1,
+            tipoPie: pieSeleccionado,
+            horaSeleccionada: horaSeleccionada,
+            esSuma: true
+        };
+        enviarDatosAlControlador(data);
+
+
+    }
+    function restarObservado(id, horaSeleccionada, pieSeleccionado) {
+        var valor = parseInt($('#' + id).text());
+        if (valor > 0) {
+            $('#' + id).text(valor - 1);
+            actualizarTotalObs();
+
+            var data = {
+                id: id,
+                cantidad: 1,
+                tipoPie: pieSeleccionado,
+                horaSeleccionada: horaSeleccionada,
+                esSuma: false
+            };
+            enviarDatosAlControlador(data);
+        }
+    }
+
+    function enviarDatosAlControlador(data) {
+        $.ajax({
+            url: '/RegistrarHallazgo',
+            type: 'POST',
+            data: data,
+            success: function (response) {
+               
+            },
+            error: function () {
+                
+            }
+        });
+    }
+
+
+</script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#registrar-btn').click(function () {
+                var totalObs = $('#totalObs').text();
+                var totalRep = $('#totalRep').text();
+                var paresPrimera = $('#valor').text();
+
+                var data = {
+                    totalObservado: totalObs,
+                    totalReproceso: totalRep,
+                    paresPrimera: paresPrimera
+                };
+
+                $.ajax({
+                    url: '/RegistrarInspeccion',
+                    type: 'POST',
+                    data: data,
+                    success: function (response) {
+                        /
+                    },
+                    error: function () {
+                        
+                    }
+                });
+            });
+  });
+</script>
+
+    

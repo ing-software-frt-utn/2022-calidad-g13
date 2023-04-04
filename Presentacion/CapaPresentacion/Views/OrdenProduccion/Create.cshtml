@@ -1,0 +1,115 @@
+﻿@model CapaPresentacionAdmin.Models.VMOrdenProduccion
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<style>
+    .btn-green {
+        background-color: green;
+        color: white;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+
+
+</style>
+
+
+<h2>Inciar Orden de Produccion</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Numero_OP, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Numero_OP, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Numero_OP, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Num_linea, "Linea", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Num_linea, (IEnumerable<SelectListItem>)ViewBag.listalineas, "Seleccione una linea", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Num_linea, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Sku_modelo, "Modelo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Sku_modelo, (IEnumerable<SelectListItem>)ViewBag.listamodelos, "Seleccione un modelo", new { @class = "form-control", id = "selectModelo" })
+                @Html.HiddenFor(model => model.Sku_modelo, new { id = "model-sku" })
+                @Html.ValidationMessageFor(model => model.Sku_modelo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group" >
+            @Html.LabelFor(model => model.Codigo_color, "Color", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Codigo_color, Enumerable.Empty<SelectListItem>(), "Seleccione un color", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Codigo_color, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <button type="submit" class="btn btn-green">Crear</button>
+    </div>
+      </div>
+</div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+  {
+    <div class="alert alert-danger" style="margin-bottom: 10px;">@ViewBag.Mensaje</div>
+  }
+
+<div style="margin-bottom: 20px;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+
+
+<script>
+$(function () {
+    $('#selectModelo').change(function () {
+        var url = '@Url.Action("GetColordelModelo", "OrdenProduccion")';
+        var modeloId = $(this).val();
+        $.getJSON(url, { sku_model: modeloId }, function (data) {
+            var items = '<option>Seleccione un color</option>';
+            $.each(data, function (i, color) {
+                items += "<option value='" + color.Value + "'>" + color.Text + "</option>";
+            });
+            $('#Codigo_color').html(items); // Aquí se usa el id "Codigo_color" que es el mismo que se definió en el dropdownlist.
+        })
+        .done(function(data) {
+            console.log(data); // Aquí se muestra la respuesta del servidor en la consola.
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            console.log(textStatus + ': ' + errorThrown);
+        });
+    });
+});
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('form').validate();
+    });
+</script>

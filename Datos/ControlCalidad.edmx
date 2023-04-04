@@ -1,0 +1,707 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TFI_ControlCalidadModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="codigo" />
+          </Key>
+          <Property Name="codigo" Type="int" Nullable="false" />
+          <Property Name="descripcion" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="Defecto">
+          <Key>
+            <PropertyRef Name="ID_Defecto" />
+          </Key>
+          <Property Name="ID_Defecto" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="150" />
+          <Property Name="Tipo_Defecto" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Hallazgo">
+          <Key>
+            <PropertyRef Name="ID_Hallazgo" />
+          </Key>
+          <Property Name="ID_Hallazgo" Type="int" Nullable="false" />
+          <Property Name="Fecha_Hallazgo" Type="datetime" />
+          <Property Name="Hora_Registro" Type="time" Precision="7" />
+          <Property Name="Pie" Type="varchar" MaxLength="50" />
+          <Property Name="Defecto_id" Type="int" />
+          <Property Name="ID_JL" Type="int" />
+        </EntityType>
+        <EntityType Name="JornadaLaboral">
+          <Key>
+            <PropertyRef Name="ID_JL" />
+          </Key>
+          <Property Name="ID_JL" Type="int" Nullable="false" />
+          <Property Name="FechaInicio" Type="datetime" />
+          <Property Name="FechaFin" Type="datetime" />
+          <Property Name="Total_PP" Type="int" />
+          <Property Name="Id_Turno" Type="int" />
+          <Property Name="id_usuario" Type="int" />
+          <Property Name="num_op" Type="int" />
+          <Property Name="TotalDR" Type="int" />
+          <Property Name="TotalDO" Type="int" />
+        </EntityType>
+        <EntityType Name="Linea">
+          <Key>
+            <PropertyRef Name="Numero_Linea" />
+          </Key>
+          <Property Name="Numero_Linea" Type="int" Nullable="false" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Modelo">
+          <Key>
+            <PropertyRef Name="SKU" />
+          </Key>
+          <Property Name="SKU" Type="int" Nullable="false" />
+          <Property Name="Denominacion" Type="varchar" MaxLength="50" />
+          <Property Name="LimiteSuperiorObs" Type="int" />
+          <Property Name="LimiteInferiorObs" Type="int" />
+          <Property Name="LimiteSuperiorRep" Type="int" />
+          <Property Name="LimiteInferiorRep" Type="int" />
+        </EntityType>
+        <EntityType Name="Modelo_Colores">
+          <Key>
+            <PropertyRef Name="SKU" />
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="SKU" Type="int" Nullable="false" />
+          <Property Name="Codigo" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orden_Produccion">
+          <Key>
+            <PropertyRef Name="Numero_OP" />
+          </Key>
+          <Property Name="Numero_OP" Type="int" Nullable="false" />
+          <Property Name="Fecha_I" Type="datetime" />
+          <Property Name="Fecha_F" Type="datetime" />
+          <Property Name="num_linea" Type="int" />
+          <Property Name="Estado" Type="varchar" MaxLength="50" />
+          <Property Name="codigo_color" Type="int" />
+          <Property Name="sku_modelo" Type="int" />
+          <Property Name="id_usuario" Type="int" />
+        </EntityType>
+        <EntityType Name="Turno">
+          <Key>
+            <PropertyRef Name="ID_Turno" />
+          </Key>
+          <Property Name="ID_Turno" Type="int" Nullable="false" />
+          <Property Name="Hr_Inicio" Type="time" Precision="5" />
+          <Property Name="HR_Fin" Type="time" Precision="5" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Legajo" />
+          </Key>
+          <Property Name="Legajo" Type="int" Nullable="false" />
+          <Property Name="Contraseña" Type="varchar" MaxLength="150" />
+          <Property Name="Nombre_Apellido" Type="varchar" MaxLength="150" />
+          <Property Name="Email" Type="varchar" MaxLength="150" />
+          <Property Name="Rol" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Hallazgo__Defect__300424B4">
+          <End Role="Defecto" Type="Self.Defecto" Multiplicity="0..1" />
+          <End Role="Hallazgo" Type="Self.Hallazgo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Defecto">
+              <PropertyRef Name="ID_Defecto" />
+            </Principal>
+            <Dependent Role="Hallazgo">
+              <PropertyRef Name="Defecto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Hallazgo__ID_JL__5BE2A6F2">
+          <End Role="JornadaLaboral" Type="Self.JornadaLaboral" Multiplicity="0..1" />
+          <End Role="Hallazgo" Type="Self.Hallazgo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JornadaLaboral">
+              <PropertyRef Name="ID_JL" />
+            </Principal>
+            <Dependent Role="Hallazgo">
+              <PropertyRef Name="ID_JL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__JorandaLa__id_us__36B12243">
+          <End Role="Turno" Type="Self.Turno" Multiplicity="0..1" />
+          <End Role="JornadaLaboral" Type="Self.JornadaLaboral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turno">
+              <PropertyRef Name="ID_Turno" />
+            </Principal>
+            <Dependent Role="JornadaLaboral">
+              <PropertyRef Name="Id_Turno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__JorandaLa__id_us__38996AB5">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="JornadaLaboral" Type="Self.JornadaLaboral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Legajo" />
+            </Principal>
+            <Dependent Role="JornadaLaboral">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Modelo_Co__Codig__29572725">
+          <End Role="Color" Type="Self.Color" Multiplicity="1" />
+          <End Role="Modelo_Colores" Type="Self.Modelo_Colores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="codigo" />
+            </Principal>
+            <Dependent Role="Modelo_Colores">
+              <PropertyRef Name="Codigo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Modelo_Colo__SKU__286302EC">
+          <End Role="Modelo" Type="Self.Modelo" Multiplicity="1" />
+          <End Role="Modelo_Colores" Type="Self.Modelo_Colores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modelo">
+              <PropertyRef Name="SKU" />
+            </Principal>
+            <Dependent Role="Modelo_Colores">
+              <PropertyRef Name="SKU" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden_Pro__codig__4D94879B">
+          <End Role="Color" Type="Self.Color" Multiplicity="0..1" />
+          <End Role="Orden_Produccion" Type="Self.Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="codigo" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="codigo_color" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden_Pro__id_us__4AB81AF0">
+          <End Role="Usuario" Type="Self.Usuario" Multiplicity="0..1" />
+          <End Role="Orden_Produccion" Type="Self.Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Legajo" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden_Pro__num_l__49C3F6B7">
+          <End Role="Linea" Type="Self.Linea" Multiplicity="0..1" />
+          <End Role="Orden_Produccion" Type="Self.Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Linea">
+              <PropertyRef Name="Numero_Linea" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="num_linea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden_Pro__sku_m__4CA06362">
+          <End Role="Modelo" Type="Self.Modelo" Multiplicity="0..1" />
+          <End Role="Orden_Produccion" Type="Self.Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modelo">
+              <PropertyRef Name="SKU" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="sku_modelo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JornadaLaboral_Orden_Produccion">
+          <End Role="Orden_Produccion" Type="Self.Orden_Produccion" Multiplicity="0..1" />
+          <End Role="JornadaLaboral" Type="Self.JornadaLaboral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orden_Produccion">
+              <PropertyRef Name="Numero_OP" />
+            </Principal>
+            <Dependent Role="JornadaLaboral">
+              <PropertyRef Name="num_op" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TFI_ControlCalidadModelStoreContainer">
+          <EntitySet Name="Color" EntityType="Self.Color" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Defecto" EntityType="Self.Defecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Hallazgo" EntityType="Self.Hallazgo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JornadaLaboral" EntityType="Self.JornadaLaboral" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Linea" EntityType="Self.Linea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Modelo" EntityType="Self.Modelo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Modelo_Colores" EntityType="Self.Modelo_Colores" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orden_Produccion" EntityType="Self.Orden_Produccion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Turno" EntityType="Self.Turno" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Hallazgo__Defect__300424B4" Association="Self.FK__Hallazgo__Defect__300424B4">
+            <End Role="Defecto" EntitySet="Defecto" />
+            <End Role="Hallazgo" EntitySet="Hallazgo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Hallazgo__ID_JL__5BE2A6F2" Association="Self.FK__Hallazgo__ID_JL__5BE2A6F2">
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+            <End Role="Hallazgo" EntitySet="Hallazgo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__JorandaLa__id_us__36B12243" Association="Self.FK__JorandaLa__id_us__36B12243">
+            <End Role="Turno" EntitySet="Turno" />
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+          </AssociationSet>
+          <AssociationSet Name="FK__JorandaLa__id_us__38996AB5" Association="Self.FK__JorandaLa__id_us__38996AB5">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Modelo_Co__Codig__29572725" Association="Self.FK__Modelo_Co__Codig__29572725">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="Modelo_Colores" EntitySet="Modelo_Colores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Modelo_Colo__SKU__286302EC" Association="Self.FK__Modelo_Colo__SKU__286302EC">
+            <End Role="Modelo" EntitySet="Modelo" />
+            <End Role="Modelo_Colores" EntitySet="Modelo_Colores" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden_Pro__codig__4D94879B" Association="Self.FK__Orden_Pro__codig__4D94879B">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden_Pro__id_us__4AB81AF0" Association="Self.FK__Orden_Pro__id_us__4AB81AF0">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden_Pro__num_l__49C3F6B7" Association="Self.FK__Orden_Pro__num_l__49C3F6B7">
+            <End Role="Linea" EntitySet="Linea" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden_Pro__sku_m__4CA06362" Association="Self.FK__Orden_Pro__sku_m__4CA06362">
+            <End Role="Modelo" EntitySet="Modelo" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JornadaLaboral_Orden_Produccion" Association="Self.FK_JornadaLaboral_Orden_Produccion">
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TFI_ControlCalidadModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Color">
+          <Key>
+            <PropertyRef Name="codigo" />
+          </Key>
+          <Property Name="codigo" Type="Int32" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Modelo" Relationship="Self.Modelo_Colores" FromRole="Color" ToRole="Modelo" />
+          <NavigationProperty Name="Orden_Produccion" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__codig__4D94879B" FromRole="Color" ToRole="Orden_Produccion" />
+        </EntityType>
+        <EntityType Name="Defecto">
+          <Key>
+            <PropertyRef Name="ID_Defecto" />
+          </Key>
+          <Property Name="ID_Defecto" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Tipo_Defecto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Hallazgo" Relationship="TFI_ControlCalidadModel.FK__Hallazgo__Defect__300424B4" FromRole="Defecto" ToRole="Hallazgo" />
+        </EntityType>
+        <EntityType Name="Linea">
+          <Key>
+            <PropertyRef Name="Numero_Linea" />
+          </Key>
+          <Property Name="Numero_Linea" Type="Int32" Nullable="false" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Orden_Produccion" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__num_l__49C3F6B7" FromRole="Linea" ToRole="Orden_Produccion" />
+        </EntityType>
+        <EntityType Name="Modelo">
+          <Key>
+            <PropertyRef Name="SKU" />
+          </Key>
+          <Property Name="SKU" Type="Int32" Nullable="false" />
+          <Property Name="Denominacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LimiteSuperiorObs" Type="Int32" />
+          <Property Name="LimiteInferiorObs" Type="Int32" />
+          <Property Name="LimiteSuperiorRep" Type="Int32" />
+          <Property Name="LimiteInferiorRep" Type="Int32" />
+          <NavigationProperty Name="Color" Relationship="Self.Modelo_Colores" FromRole="Modelo" ToRole="Color" />
+          <NavigationProperty Name="Orden_Produccion" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__sku_m__4CA06362" FromRole="Modelo" ToRole="Orden_Produccion" />
+        </EntityType>
+        <EntityType Name="Turno">
+          <Key>
+            <PropertyRef Name="ID_Turno" />
+          </Key>
+          <Property Name="ID_Turno" Type="Int32" Nullable="false" />
+          <Property Name="Hr_Inicio" Type="Time" Precision="5" />
+          <Property Name="HR_Fin" Type="Time" Precision="5" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="JornadaLaboral" Relationship="TFI_ControlCalidadModel.FK__JorandaLa__id_us__36B12243" FromRole="Turno" ToRole="JornadaLaboral" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="Legajo" />
+          </Key>
+          <Property Name="Legajo" Type="Int32" Nullable="false" />
+          <Property Name="Contraseña" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Nombre_Apellido" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="Rol" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Orden_Produccion" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__id_us__4AB81AF0" FromRole="Usuario" ToRole="Orden_Produccion" />
+          <NavigationProperty Name="JornadaLaboral" Relationship="TFI_ControlCalidadModel.FK__JorandaLa__id_us__38996AB5" FromRole="Usuario" ToRole="JornadaLaboral" />
+        </EntityType>
+        <Association Name="Modelo_Colores">
+          <End Role="Color" Type="Self.Color" Multiplicity="*" />
+          <End Role="Modelo" Type="Self.Modelo" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="TFI_ControlCalidadEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Color" EntityType="Self.Color" />
+          <EntitySet Name="Defecto" EntityType="Self.Defecto" />
+          <EntitySet Name="Linea" EntityType="Self.Linea" />
+          <EntitySet Name="Modelo" EntityType="Self.Modelo" />
+          <EntitySet Name="Turno" EntityType="Self.Turno" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" />
+          <AssociationSet Name="Modelo_Colores" Association="Self.Modelo_Colores">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="Modelo" EntitySet="Modelo" />
+          </AssociationSet>
+          <EntitySet Name="Hallazgo" EntityType="TFI_ControlCalidadModel.Hallazgo" />
+          <AssociationSet Name="FK__Hallazgo__Defect__300424B4" Association="TFI_ControlCalidadModel.FK__Hallazgo__Defect__300424B4">
+            <End Role="Defecto" EntitySet="Defecto" />
+            <End Role="Hallazgo" EntitySet="Hallazgo" />
+          </AssociationSet>
+          <EntitySet Name="Orden_Produccion" EntityType="TFI_ControlCalidadModel.Orden_Produccion" />
+          <AssociationSet Name="FK__Orden_Pro__codig__4D94879B" Association="TFI_ControlCalidadModel.FK__Orden_Pro__codig__4D94879B">
+            <End Role="Color" EntitySet="Color" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden_Pro__num_l__49C3F6B7" Association="TFI_ControlCalidadModel.FK__Orden_Pro__num_l__49C3F6B7">
+            <End Role="Linea" EntitySet="Linea" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden_Pro__sku_m__4CA06362" Association="TFI_ControlCalidadModel.FK__Orden_Pro__sku_m__4CA06362">
+            <End Role="Modelo" EntitySet="Modelo" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orden_Pro__id_us__4AB81AF0" Association="TFI_ControlCalidadModel.FK__Orden_Pro__id_us__4AB81AF0">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+          </AssociationSet>
+          <EntitySet Name="JornadaLaboral" EntityType="TFI_ControlCalidadModel.JornadaLaboral" />
+          <AssociationSet Name="FK__Hallazgo__ID_JL__5BE2A6F2" Association="TFI_ControlCalidadModel.FK__Hallazgo__ID_JL__5BE2A6F2">
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+            <End Role="Hallazgo" EntitySet="Hallazgo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__JorandaLa__id_us__36B12243" Association="TFI_ControlCalidadModel.FK__JorandaLa__id_us__36B12243">
+            <End Role="Turno" EntitySet="Turno" />
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+          </AssociationSet>
+          <AssociationSet Name="FK__JorandaLa__id_us__38996AB5" Association="TFI_ControlCalidadModel.FK__JorandaLa__id_us__38996AB5">
+            <End Role="Usuario" EntitySet="Usuario" />
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JornadaLaboral_Orden_Produccion" Association="TFI_ControlCalidadModel.FK_JornadaLaboral_Orden_Produccion">
+            <End Role="Orden_Produccion" EntitySet="Orden_Produccion" />
+            <End Role="JornadaLaboral" EntitySet="JornadaLaboral" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Hallazgo">
+          <Key>
+            <PropertyRef Name="ID_Hallazgo" />
+          </Key>
+          <Property Name="ID_Hallazgo" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_Hallazgo" Type="DateTime" Precision="3" />
+          <Property Name="Hora_Registro" Type="Time" Precision="7" />
+          <Property Name="Pie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Defecto_id" Type="Int32" />
+          <Property Name="ID_JL" Type="Int32" />
+          <NavigationProperty Name="Defecto" Relationship="TFI_ControlCalidadModel.FK__Hallazgo__Defect__300424B4" FromRole="Hallazgo" ToRole="Defecto" />
+          <NavigationProperty Name="JornadaLaboral" Relationship="TFI_ControlCalidadModel.FK__Hallazgo__ID_JL__5BE2A6F2" FromRole="Hallazgo" ToRole="JornadaLaboral" />
+        </EntityType>
+        <Association Name="FK__Hallazgo__Defect__300424B4">
+          <End Type="TFI_ControlCalidadModel.Defecto" Role="Defecto" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.Hallazgo" Role="Hallazgo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Defecto">
+              <PropertyRef Name="ID_Defecto" />
+            </Principal>
+            <Dependent Role="Hallazgo">
+              <PropertyRef Name="Defecto_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Orden_Produccion">
+          <Key>
+            <PropertyRef Name="Numero_OP" />
+          </Key>
+          <Property Name="Numero_OP" Type="Int32" Nullable="false" />
+          <Property Name="Fecha_I" Type="DateTime" Precision="3" />
+          <Property Name="Fecha_F" Type="DateTime" Precision="3" />
+          <Property Name="num_linea" Type="Int32" />
+          <Property Name="Estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="codigo_color" Type="Int32" />
+          <Property Name="sku_modelo" Type="Int32" />
+          <Property Name="id_usuario" Type="Int32" />
+          <NavigationProperty Name="Color" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__codig__4D94879B" FromRole="Orden_Produccion" ToRole="Color" />
+          <NavigationProperty Name="Linea" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__num_l__49C3F6B7" FromRole="Orden_Produccion" ToRole="Linea" />
+          <NavigationProperty Name="Modelo" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__sku_m__4CA06362" FromRole="Orden_Produccion" ToRole="Modelo" />
+          <NavigationProperty Name="Usuario" Relationship="TFI_ControlCalidadModel.FK__Orden_Pro__id_us__4AB81AF0" FromRole="Orden_Produccion" ToRole="Usuario" />
+          <NavigationProperty Name="JornadaLaboral" Relationship="TFI_ControlCalidadModel.FK_JornadaLaboral_Orden_Produccion" FromRole="Orden_Produccion" ToRole="JornadaLaboral" />
+        </EntityType>
+        <Association Name="FK__Orden_Pro__codig__4D94879B">
+          <End Type="TFI_ControlCalidadModel.Color" Role="Color" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.Orden_Produccion" Role="Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Color">
+              <PropertyRef Name="codigo" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="codigo_color" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden_Pro__num_l__49C3F6B7">
+          <End Type="TFI_ControlCalidadModel.Linea" Role="Linea" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.Orden_Produccion" Role="Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Linea">
+              <PropertyRef Name="Numero_Linea" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="num_linea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden_Pro__sku_m__4CA06362">
+          <End Type="TFI_ControlCalidadModel.Modelo" Role="Modelo" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.Orden_Produccion" Role="Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Modelo">
+              <PropertyRef Name="SKU" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="sku_modelo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orden_Pro__id_us__4AB81AF0">
+          <End Type="TFI_ControlCalidadModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.Orden_Produccion" Role="Orden_Produccion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Legajo" />
+            </Principal>
+            <Dependent Role="Orden_Produccion">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="JornadaLaboral">
+          <Key>
+            <PropertyRef Name="ID_JL" />
+          </Key>
+          <Property Name="ID_JL" Type="Int32" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Precision="3" />
+          <Property Name="FechaFin" Type="DateTime" Precision="3" />
+          <Property Name="Total_PP" Type="Int32" />
+          <Property Name="Id_Turno" Type="Int32" />
+          <Property Name="id_usuario" Type="Int32" />
+          <Property Name="num_op" Type="Int32" />
+          <NavigationProperty Name="Hallazgo" Relationship="TFI_ControlCalidadModel.FK__Hallazgo__ID_JL__5BE2A6F2" FromRole="JornadaLaboral" ToRole="Hallazgo" />
+          <NavigationProperty Name="Turno" Relationship="TFI_ControlCalidadModel.FK__JorandaLa__id_us__36B12243" FromRole="JornadaLaboral" ToRole="Turno" />
+          <NavigationProperty Name="Usuario" Relationship="TFI_ControlCalidadModel.FK__JorandaLa__id_us__38996AB5" FromRole="JornadaLaboral" ToRole="Usuario" />
+          <NavigationProperty Name="Orden_Produccion" Relationship="TFI_ControlCalidadModel.FK_JornadaLaboral_Orden_Produccion" FromRole="JornadaLaboral" ToRole="Orden_Produccion" />
+          <Property Name="TotalDR" Type="Int32" />
+          <Property Name="TotalDO" Type="Int32" />
+        </EntityType>
+        <Association Name="FK__Hallazgo__ID_JL__5BE2A6F2">
+          <End Type="TFI_ControlCalidadModel.JornadaLaboral" Role="JornadaLaboral" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.Hallazgo" Role="Hallazgo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="JornadaLaboral">
+              <PropertyRef Name="ID_JL" />
+            </Principal>
+            <Dependent Role="Hallazgo">
+              <PropertyRef Name="ID_JL" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__JorandaLa__id_us__36B12243">
+          <End Type="TFI_ControlCalidadModel.Turno" Role="Turno" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.JornadaLaboral" Role="JornadaLaboral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turno">
+              <PropertyRef Name="ID_Turno" />
+            </Principal>
+            <Dependent Role="JornadaLaboral">
+              <PropertyRef Name="Id_Turno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__JorandaLa__id_us__38996AB5">
+          <End Type="TFI_ControlCalidadModel.Usuario" Role="Usuario" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.JornadaLaboral" Role="JornadaLaboral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuario">
+              <PropertyRef Name="Legajo" />
+            </Principal>
+            <Dependent Role="JornadaLaboral">
+              <PropertyRef Name="id_usuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JornadaLaboral_Orden_Produccion">
+          <End Type="TFI_ControlCalidadModel.Orden_Produccion" Role="Orden_Produccion" Multiplicity="0..1" />
+          <End Type="TFI_ControlCalidadModel.JornadaLaboral" Role="JornadaLaboral" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orden_Produccion">
+              <PropertyRef Name="Numero_OP" />
+            </Principal>
+            <Dependent Role="JornadaLaboral">
+              <PropertyRef Name="num_op" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TFI_ControlCalidadModelStoreContainer" CdmEntityContainer="TFI_ControlCalidadEntities">
+          <EntitySetMapping Name="Color">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Color">
+              <MappingFragment StoreEntitySet="Color">
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Defecto">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Defecto">
+              <MappingFragment StoreEntitySet="Defecto">
+                <ScalarProperty Name="ID_Defecto" ColumnName="ID_Defecto" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Tipo_Defecto" ColumnName="Tipo_Defecto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Linea">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Linea">
+              <MappingFragment StoreEntitySet="Linea">
+                <ScalarProperty Name="Numero_Linea" ColumnName="Numero_Linea" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Modelo">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Modelo">
+              <MappingFragment StoreEntitySet="Modelo">
+                <ScalarProperty Name="SKU" ColumnName="SKU" />
+                <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
+                <ScalarProperty Name="LimiteSuperiorObs" ColumnName="LimiteSuperiorObs" />
+                <ScalarProperty Name="LimiteInferiorObs" ColumnName="LimiteInferiorObs" />
+                <ScalarProperty Name="LimiteSuperiorRep" ColumnName="LimiteSuperiorRep" />
+                <ScalarProperty Name="LimiteInferiorRep" ColumnName="LimiteInferiorRep" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Turno">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Turno">
+              <MappingFragment StoreEntitySet="Turno">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="ID_Turno" ColumnName="ID_Turno" />
+                <ScalarProperty Name="Hr_Inicio" ColumnName="Hr_Inicio" />
+                <ScalarProperty Name="HR_Fin" ColumnName="HR_Fin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Legajo" ColumnName="Legajo" />
+                <ScalarProperty Name="Contraseña" ColumnName="Contraseña" />
+                <ScalarProperty Name="Nombre_Apellido" ColumnName="Nombre_Apellido" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="Modelo_Colores" TypeName="TFI_ControlCalidadModel.Modelo_Colores" StoreEntitySet="Modelo_Colores">
+            <EndProperty Name="Color">
+              <ScalarProperty Name="codigo" ColumnName="Codigo" />
+            </EndProperty>
+            <EndProperty Name="Modelo">
+              <ScalarProperty Name="SKU" ColumnName="SKU" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Hallazgo">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Hallazgo">
+              <MappingFragment StoreEntitySet="Hallazgo">
+                <ScalarProperty Name="ID_JL" ColumnName="ID_JL" />
+                <ScalarProperty Name="Defecto_id" ColumnName="Defecto_id" />
+                <ScalarProperty Name="Pie" ColumnName="Pie" />
+                <ScalarProperty Name="Hora_Registro" ColumnName="Hora_Registro" />
+                <ScalarProperty Name="Fecha_Hallazgo" ColumnName="Fecha_Hallazgo" />
+                <ScalarProperty Name="ID_Hallazgo" ColumnName="ID_Hallazgo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orden_Produccion">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.Orden_Produccion">
+              <MappingFragment StoreEntitySet="Orden_Produccion">
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="sku_modelo" ColumnName="sku_modelo" />
+                <ScalarProperty Name="codigo_color" ColumnName="codigo_color" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="num_linea" ColumnName="num_linea" />
+                <ScalarProperty Name="Fecha_F" ColumnName="Fecha_F" />
+                <ScalarProperty Name="Fecha_I" ColumnName="Fecha_I" />
+                <ScalarProperty Name="Numero_OP" ColumnName="Numero_OP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JornadaLaboral">
+            <EntityTypeMapping TypeName="TFI_ControlCalidadModel.JornadaLaboral">
+              <MappingFragment StoreEntitySet="JornadaLaboral">
+                <ScalarProperty Name="TotalDO" ColumnName="TotalDO" />
+                <ScalarProperty Name="TotalDR" ColumnName="TotalDR" />
+                <ScalarProperty Name="num_op" ColumnName="num_op" />
+                <ScalarProperty Name="id_usuario" ColumnName="id_usuario" />
+                <ScalarProperty Name="Id_Turno" ColumnName="Id_Turno" />
+                <ScalarProperty Name="Total_PP" ColumnName="Total_PP" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="ID_JL" ColumnName="ID_JL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

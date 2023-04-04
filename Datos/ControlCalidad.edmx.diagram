@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="55c8fbf27e094a91a05b0843e5579ce2" Name="Diagram1" ZoomLevel="133">
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Color" Width="1.5" PointX="3" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Defecto" Width="1.5" PointX="1.5" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Linea" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Modelo" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Turno" Width="1.5" PointX="0.75" PointY="12.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Usuario" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.Modelo_Colores" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Hallazgo" Width="1.5" PointX="7.75" PointY="8.625" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__Hallazgo__Defect__300424B4" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.Orden_Produccion" Width="1.5" PointX="10.75" PointY="8.125" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__Orden_Pro__codig__4D94879B" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__Orden_Pro__num_l__49C3F6B7" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__Orden_Pro__sku_m__4CA06362" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__Orden_Pro__id_us__4AB81AF0" />
+        <EntityTypeShape EntityType="TFI_ControlCalidadModel.JornadaLaboral" Width="1.5" PointX="6.125" PointY="2.5" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__Hallazgo__ID_JL__5BE2A6F2" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__JorandaLa__id_us__36B12243" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK__JorandaLa__id_us__38996AB5" />
+        <AssociationConnector Association="TFI_ControlCalidadModel.FK_JornadaLaboral_Orden_Produccion" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

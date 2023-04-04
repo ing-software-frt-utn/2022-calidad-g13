@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<style>
+    h2.text-center {
+        margin-bottom: 20px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+</style>
+<h2 class="text-center">Asociarse a una Orden de Produccion</h2>
+
+@using (Html.BeginForm())
+{
+    <label for="numeroOP">Seleccionar OP:</label>
+    @Html.DropDownList("numeroOP", ViewBag.numeroOP as SelectList, "-- Seleccionar OP --")
+    <button type="submit">Buscar</button>
+}
+
+<div class="mt-lg-2">
+  
+    
+        <div class="row text-center my-lg-4">
+            <div class="col-sm-4 text-center">
+                @Html.ActionLink("Asociar", "AsociarUsuarioOP", "Asociar_AbandonarOP", new { @class = "btn btn-success", @role = "button"})
+            </div>
+            @*<div class="col-sm-4 text-center">
+                @Html.ActionLink("Inspeccionar", "Index", "Inspeccionar", new { @class = "btn btn-primary", @role = "button" })
+            </div>*@
+            <div class="col-sm-4 text-center">
+                @Html.ActionLink("Abandonar", "AbandonarOP", "Asociar_AbandonarOP", new { @class = "btn btn-danger", @role = "button" })
+            </div>
+        </div>
+
+</div>
+
+
+
+
+
+    @if (ViewBag.OPSeleccionada != null)
+    {
+        <div style="margin-top: 30px;">
+            <h5 style="margin-bottom: 10px;">Detalles de la Orden de Producción</h5>
+            <p>Número de OP: @ViewBag.OPSeleccionada.Numero_OP</p>
+            <p>Estado: @ViewBag.OPSeleccionada.Estado_OP</p>
+            <p>Modelo: @ViewBag.ModeloOP.Denominacion</p>
+            <p>Color: @ViewBag.ColorOP.Descripcion</p>
+            <p>Línea: @ViewBag.OPSeleccionada.Num_linea</p>
+        </div>
+    }
+
+    @if (ViewBag.OPSeleccionada != null)
+    {
+        <div class="row">
+            <div class="col-sm-4 text-center">
+                @Html.ActionLink("Asociar", "AsociarUsuarioOP", new { idOP = ViewBag.OPSeleccionada.Numero_OP }, new { @class = "btn btn-success" })
+            </div>
+            <div class="col-sm-4 text-center">
+                @Html.ActionLink("Inspeccionar", "Index", "Inspeccionar", new { idOP = ViewBag.OPSeleccionada.Numero_OP }, new { @class = "btn btn-primary", disabled = "disabled" })
+            </div>
+            <div class="col-sm-4 text-center">
+                @Html.ActionLink("Abandonar", "AbandonarOP", new { idOP = ViewBag.OPSeleccionada.Numero_OP }, new { @class = "btn btn-danger", disabled = "disabled" })
+            </div>
+
+        </div>
+
+
+    }
+
+
+
+    @if (!string.IsNullOrEmpty(ViewBag.Mensaje))
+    {
+        <div class="alert alert-danger">@ViewBag.Mensaje</div>
+    }
+
+    @if (TempData["Mensaje"] != null)
+    {
+        <div class="alert alert-danger">
+            @if (TempData["Mensaje"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Mensaje"]</div>
+                
+
+            }
+
+        </div>
+    }
